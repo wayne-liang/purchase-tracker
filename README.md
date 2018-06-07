@@ -4,5 +4,7 @@ A React application for keeping track of your spending.
 
 ![yay](./images/yay.png?raw=true "Yay")
 
-Requires the use of the purchase-tracker-server application.
 Uses React with MaterialUI components.
+Connects with REST API provided by purchase-tracker-server.
+
+Requires **M**ongoDB, **E**xpressJS, **R**eact, and **N**odeJS.
