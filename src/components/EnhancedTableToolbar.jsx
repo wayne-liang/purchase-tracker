@@ -105,6 +105,7 @@ const EnhancedTableToolbar = props => {
               </MenuItem>
               <MenuItem value="week">This week</MenuItem>
               <MenuItem value="month">This month</MenuItem>
+              <MenuItem value="year">This year</MenuItem>
             </Select>
           </FormControl>
         )}
