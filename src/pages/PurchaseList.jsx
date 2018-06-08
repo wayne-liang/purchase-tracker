@@ -29,9 +29,9 @@ class PurchaseList extends Component {
 
     this.state = {
       purchases: [],
-      purchasesThisWeek: [],
-      purchasesThisMonth: [],
-      purchasesThisYear: [],
+      weekPurchases: [],
+      monthPurchases: [],
+      yearPurchases: [],
     };
 
     this.loadPurchases = this.loadPurchases.bind(this);
@@ -47,15 +47,13 @@ class PurchaseList extends Component {
       this.setState({ purchases });
     });
 
-    const today = new Date();
-    axios.get(`http://localhost:8080/api/purchases/recent/${(today.getDay() + 6) % 7}`).then(res => {
-      const purchasesThisWeek = formatData(res.data);
-      this.setState({ purchasesThisWeek });
-    });
-
-    axios.get(`http://localhost:8080/api/purchases/recent/${today.getDate() - 1}`).then(res => {
-      const purchasesThisMonth = formatData(res.data);
-      this.setState({ purchasesThisMonth });
+    ['week', 'month', 'year'].forEach(timePeriod => {
+      axios
+        .get(`http://localhost:8080/api/purchases/recent/${timePeriod}`)
+        .then(res => {
+          const purchases = formatData(res.data);
+          this.setState({ [`${timePeriod}Purchases`]: purchases });
+        });
     });
   }
 
@@ -67,16 +65,18 @@ class PurchaseList extends Component {
         <Grid container spacing={0}>
           <Grid item xs={9}>
             <EnhancedTable
-              purchasesThisWeek={this.state.purchasesThisWeek}
-              purchasesThisMonth={this.state.purchasesThisMonth}
+              weekPurchases={this.state.weekPurchases}
+              monthPurchases={this.state.monthPurchases}
+              yearPurchases={this.state.yearPurchases}
               purchases={this.state.purchases}
               reload={this.loadPurchases}
             />
           </Grid>
           <Grid item xs={3}>
             <Statistics
-              purchasesThisWeek={this.state.purchasesThisWeek}
-              purchasesThisMonth={this.state.purchasesThisMonth}
+              weekPurchases={this.state.weekPurchases}
+              monthPurchases={this.state.monthPurchases}
+              yearPurchases={this.state.yearPurchases}
               purchases={this.state.purchases}
             />
           </Grid>

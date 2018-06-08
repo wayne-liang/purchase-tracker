@@ -20,18 +20,30 @@ const styles = theme => ({
 });
 
 const Statistics = props => {
-  const { classes, purchases, purchasesThisWeek, purchasesThisMonth } = props;
+  const {
+    classes,
+    purchases,
+    weekPurchases,
+    monthPurchases,
+    yearPurchases,
+  } = props;
 
   const weekTotal =
-    purchasesThisWeek.length === 0
+    weekPurchases.length === 0
       ? 0
-      : purchasesThisWeek
+      : weekPurchases
           .map(purchase => parseFloat(purchase.cost))
           .reduce((sum, cost) => sum + cost);
   const monthTotal =
-    purchasesThisMonth.length === 0
+    monthPurchases.length === 0
       ? 0
-      : purchasesThisMonth
+      : monthPurchases
+          .map(purchase => parseFloat(purchase.cost))
+          .reduce((sum, cost) => sum + cost);
+  const yearTotal =
+    yearPurchases.length === 0
+      ? 0
+      : yearPurchases
           .map(purchase => parseFloat(purchase.cost))
           .reduce((sum, cost) => sum + cost);
   const total =
@@ -55,15 +67,15 @@ const Statistics = props => {
         <TableBody>
           <TableRow>
             <TableCell>Total spent this week so far:</TableCell>
-            <TableCell numeric>
-              ${weekTotal}
-            </TableCell>
+            <TableCell numeric>${weekTotal}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell>Total spent this month so far:</TableCell>
-            <TableCell numeric>
-              ${monthTotal}
-            </TableCell>
+            <TableCell numeric>${monthTotal}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Total spent this year so far:</TableCell>
+            <TableCell numeric>${yearTotal}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell>Total spent ever:</TableCell>

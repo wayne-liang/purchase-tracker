@@ -95,16 +95,23 @@ class EnhancedTable extends React.Component {
   }
 
   handleSelectAllClick(event, checked) {
-    const { purchases, purchasesThisWeek, purchasesThisMonth } = this.props;
+    const {
+      purchases,
+      weekPurchases,
+      monthPurchases,
+      yearPurchases,
+    } = this.props;
     const { filter } = this.state;
 
     let data;
     if (filter === 'none') {
       data = purchases;
     } else if (filter === 'week') {
-      data = purchasesThisWeek;
+      data = weekPurchases;
     } else if (filter === 'month') {
-      data = purchasesThisMonth;
+      data = monthPurchases;
+    } else if (filter === 'year') {
+      data = yearPurchases;
     }
 
     if (checked) {
@@ -159,8 +166,9 @@ class EnhancedTable extends React.Component {
     const {
       classes,
       purchases,
-      purchasesThisWeek,
-      purchasesThisMonth,
+      weekPurchases,
+      monthPurchases,
+      yearPurchases,
       ...others
     } = this.props;
 
@@ -170,9 +178,11 @@ class EnhancedTable extends React.Component {
     if (filter === 'none') {
       data = purchases;
     } else if (filter === 'week') {
-      data = purchasesThisWeek;
+      data = weekPurchases;
     } else if (filter === 'month') {
-      data = purchasesThisMonth;
+      data = monthPurchases;
+    } else if (filter === 'year') {
+      data = yearPurchases;
     }
 
     const emptyRows =
