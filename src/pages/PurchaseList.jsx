@@ -47,12 +47,13 @@ class PurchaseList extends Component {
       this.setState({ purchases });
     });
 
-    axios.get('http://localhost:8080/api/purchases/thisweek').then(res => {
+    const today = new Date();
+    axios.get(`http://localhost:8080/api/purchases/recent/${(today.getDay() + 6) % 7}`).then(res => {
       const purchasesThisWeek = formatData(res.data);
       this.setState({ purchasesThisWeek });
     });
 
-    axios.get('http://localhost:8080/api/purchases/thismonth').then(res => {
+    axios.get(`http://localhost:8080/api/purchases/recent/${today.getDate() - 1}`).then(res => {
       const purchasesThisMonth = formatData(res.data);
       this.setState({ purchasesThisMonth });
     });
