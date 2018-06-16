@@ -39,6 +39,14 @@ const NumberFormatCustom = props => {
   );
 };
 
+const isValidInput = (storeName, cost, date) => {
+  if (storeName.length === 0 || cost.length === 0 || date.length === 0) {
+    return false;
+  }
+
+  return true;
+};
+
 class CreatePurchaseDialog extends React.Component {
   constructor(props) {
     super(props);
@@ -48,6 +56,7 @@ class CreatePurchaseDialog extends React.Component {
       storeName: '',
       cost: '',
       date: '',
+      inputError: false,
     };
 
     this.handleClickOpen = this.handleClickOpen.bind(this);
@@ -60,12 +69,17 @@ class CreatePurchaseDialog extends React.Component {
     const { storeName, cost, date } = this.state;
     const dateObject = new Date(date);
 
+    if (!isValidInput(storeName, cost, date)) {
+      this.setState({ inputError: true });
+      return;
+    }
+
     createPurchase(storeName, cost, dateObject, this.props.reload);
     this.setState({
-      open: false,
       storeName: '',
       cost: '',
       date: '',
+      inputError: false,
     });
     this.handleClose();
   }
@@ -82,11 +96,12 @@ class CreatePurchaseDialog extends React.Component {
   }
 
   handleClose() {
-    this.setState({ open: false });
+    this.setState({ open: false, inputError: false });
   }
 
   render() {
     const { classes } = this.props;
+    const { open, storeName, cost, date, inputError } = this.state;
 
     return (
       <span>
@@ -99,7 +114,7 @@ class CreatePurchaseDialog extends React.Component {
           Add new purchase
         </Button>
         <Dialog
-          open={this.state.open}
+          open={open}
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
           maxWidth="xs"
@@ -111,8 +126,9 @@ class CreatePurchaseDialog extends React.Component {
               margin="dense"
               id="storeName"
               label="Store"
-              value={this.state.storeName}
+              value={storeName}
               onChange={this.handleChange('storeName')}
+              error={storeName.length === 0 && inputError}
               fullWidth
             />
             <br />
@@ -120,9 +136,10 @@ class CreatePurchaseDialog extends React.Component {
               margin="dense"
               fullWidth
               label="Cost"
-              value={this.state.cost}
+              value={cost}
               onChange={this.handleChange('cost')}
               id="cost"
+              error={cost.length === 0 && inputError}
               InputProps={{
                 inputComponent: NumberFormatCustom,
               }}
@@ -134,8 +151,9 @@ class CreatePurchaseDialog extends React.Component {
               id="date"
               label="Date"
               type="date"
-              value={this.state.date}
+              value={date}
               onChange={this.handleChange('date')}
+              error={date.length === 0 && inputError}
               InputLabelProps={{
                 shrink: true,
               }}
